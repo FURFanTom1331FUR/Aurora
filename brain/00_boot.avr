@@ -1,0 +1,6 @@
+// Аврора · boot
+// просыпается с диска. без облака. без llama.
+
+(LC. 10. load_persona());
+(LC. 11. load_memory());
+(LC. 12. print(null));
