@@ -72,8 +72,47 @@ class AuroraApp(tk.Tk):
         )
         self.status.pack(side="right", pady=(6, 0))
 
+        bottom = tk.Frame(self, bg=NIGHT)
+        bottom.pack(side="bottom", fill="x", padx=18, pady=(0, 16))
+
+        send = tk.Button(
+            bottom,
+            text="сказать",
+            command=self._send,
+            bg="#16302c",
+            fg=AURORA,
+            activebackground="#1c3d38",
+            activeforeground=AURORA,
+            relief="flat",
+            font=self.font_ui,
+            padx=16,
+            pady=10,
+            cursor="hand2",
+        )
+        send.pack(side="right", padx=(10, 0), fill="y")
+
+        entry_shell = tk.Frame(bottom, bg=LINE)
+        entry_shell.pack(side="left", fill="both", expand=True)
+        self.entry = tk.Text(
+            entry_shell,
+            height=3,
+            wrap="word",
+            bg=PANEL_ALT,
+            fg=TEXT,
+            insertbackground=AURORA,
+            relief="flat",
+            font=self.font_ui,
+            padx=10,
+            pady=8,
+            highlightthickness=0,
+        )
+        self.entry.pack(fill="both", expand=True, padx=1, pady=1)
+        self.entry.bind("<Return>", self._on_enter)
+        self.entry.bind("<Shift-Return>", lambda e: None)
+        self.entry.focus_set()
+
         shell = tk.Frame(self, bg=LINE, bd=0)
-        shell.pack(fill="both", expand=True, padx=18, pady=(0, 10))
+        shell.pack(side="top", fill="both", expand=True, padx=18, pady=(0, 10))
         inner = tk.Frame(shell, bg=PANEL)
         inner.pack(fill="both", expand=True, padx=1, pady=1)
 
@@ -101,45 +140,6 @@ class AuroraApp(tk.Tk):
         self.log.tag_configure("who_user", foreground=VIOLET, font=self.font_small, spacing1=10)
         self.log.tag_configure("msg", foreground=TEXT, lmargin1=8, lmargin2=8, spacing3=8)
         self.log.tag_configure("system", foreground=MUTED, font=self.font_small, spacing3=8)
-
-        bottom = tk.Frame(self, bg=NIGHT)
-        bottom.pack(fill="x", padx=18, pady=(0, 16))
-
-        entry_shell = tk.Frame(bottom, bg=LINE)
-        entry_shell.pack(side="left", fill="x", expand=True)
-        self.entry = tk.Text(
-            entry_shell,
-            height=3,
-            wrap="word",
-            bg=PANEL_ALT,
-            fg=TEXT,
-            insertbackground=AURORA,
-            relief="flat",
-            font=self.font_ui,
-            padx=10,
-            pady=8,
-            highlightthickness=0,
-        )
-        self.entry.pack(fill="both", expand=True, padx=1, pady=1)
-        self.entry.bind("<Return>", self._on_enter)
-        self.entry.bind("<Shift-Return>", lambda e: None)
-        self.entry.focus_set()
-
-        send = tk.Button(
-            bottom,
-            text="сказать",
-            command=self._send,
-            bg="#16302c",
-            fg=AURORA,
-            activebackground="#1c3d38",
-            activeforeground=AURORA,
-            relief="flat",
-            font=self.font_ui,
-            padx=16,
-            pady=10,
-            cursor="hand2",
-        )
-        send.pack(side="right", padx=(10, 0), fill="y")
 
         style = ttk.Style(self)
         try:
