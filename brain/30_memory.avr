@@ -1,0 +1,6 @@
+// память — только этот диск
+
+(LC. 40. if_contains("как меня зовут", "как моё имя", "как мое имя", "кто я").recall("name").reply("Ты {name}. Так записано в memory/me.md — можешь поправить файл сам."));
+(LC. 41. if_contains("что ты помнишь", "что ты знаешь обо мне", "что ты обо мне знаешь").recall().reply("{memory_sheet}"));
+(LC. 42. if_contains("меня зовут", "зови меня", "запомни").remember_from_message().reply("{remember_ack}"));
+(LC. 43. if_contains("покажи персону", "твоя персона", "persona").load_persona().reply("Мой голос берётся из persona/persona.md. Сейчас я {me}, говорю на «ты», живу на диске."));
