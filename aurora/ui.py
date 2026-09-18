@@ -24,8 +24,8 @@ class AuroraApp(tk.Tk):
         super().__init__()
         self.aurora = aurora
         self.title("Аврора · офлайн")
-        self.geometry("760x560")
-        self.minsize(520, 420)
+        self.geometry("780x600")
+        self.minsize(560, 480)
         self.configure(bg=NIGHT)
         self._busy = False
         self._build_fonts()
@@ -45,8 +45,11 @@ class AuroraApp(tk.Tk):
             self.font_mono = tkfont.Font(family="TkFixedFont", size=9)
 
     def _build(self) -> None:
+        self.columnconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+
         header = tk.Frame(self, bg=NIGHT)
-        header.pack(fill="x", padx=18, pady=(16, 8))
+        header.grid(row=0, column=0, sticky="ew", padx=18, pady=(16, 8))
 
         tk.Label(
             header,
@@ -72,8 +75,39 @@ class AuroraApp(tk.Tk):
         )
         self.status.pack(side="right", pady=(6, 0))
 
+        shell = tk.Frame(self, bg=LINE, bd=0)
+        shell.grid(row=1, column=0, sticky="nsew", padx=18, pady=(0, 10))
+        inner = tk.Frame(shell, bg=PANEL)
+        inner.pack(fill="both", expand=True, padx=1, pady=1)
+
+        self.log = tk.Text(
+            inner,
+            wrap="word",
+            height=12,
+            bg=PANEL,
+            fg=TEXT,
+            insertbackground=AURORA,
+            relief="flat",
+            bd=0,
+            padx=14,
+            pady=12,
+            font=self.font_ui,
+            state="disabled",
+            highlightthickness=0,
+            cursor="arrow",
+        )
+        scroll = ttk.Scrollbar(inner, command=self.log.yview)
+        self.log.configure(yscrollcommand=scroll.set)
+        scroll.pack(side="right", fill="y")
+        self.log.pack(side="left", fill="both", expand=True)
+
+        self.log.tag_configure("who_aurora", foreground=AURORA, font=self.font_small, spacing1=10)
+        self.log.tag_configure("who_user", foreground=VIOLET, font=self.font_small, spacing1=10)
+        self.log.tag_configure("msg", foreground=TEXT, lmargin1=8, lmargin2=8, spacing3=8)
+        self.log.tag_configure("system", foreground=MUTED, font=self.font_small, spacing3=8)
+
         bottom = tk.Frame(self, bg=NIGHT)
-        bottom.pack(side="bottom", fill="x", padx=18, pady=(0, 16))
+        bottom.grid(row=2, column=0, sticky="ew", padx=18, pady=(0, 16))
 
         send = tk.Button(
             bottom,
@@ -110,36 +144,6 @@ class AuroraApp(tk.Tk):
         self.entry.bind("<Return>", self._on_enter)
         self.entry.bind("<Shift-Return>", lambda e: None)
         self.entry.focus_set()
-
-        shell = tk.Frame(self, bg=LINE, bd=0)
-        shell.pack(side="top", fill="both", expand=True, padx=18, pady=(0, 10))
-        inner = tk.Frame(shell, bg=PANEL)
-        inner.pack(fill="both", expand=True, padx=1, pady=1)
-
-        self.log = tk.Text(
-            inner,
-            wrap="word",
-            bg=PANEL,
-            fg=TEXT,
-            insertbackground=AURORA,
-            relief="flat",
-            bd=0,
-            padx=14,
-            pady=12,
-            font=self.font_ui,
-            state="disabled",
-            highlightthickness=0,
-            cursor="arrow",
-        )
-        scroll = ttk.Scrollbar(inner, command=self.log.yview)
-        self.log.configure(yscrollcommand=scroll.set)
-        scroll.pack(side="right", fill="y")
-        self.log.pack(side="left", fill="both", expand=True)
-
-        self.log.tag_configure("who_aurora", foreground=AURORA, font=self.font_small, spacing1=10)
-        self.log.tag_configure("who_user", foreground=VIOLET, font=self.font_small, spacing1=10)
-        self.log.tag_configure("msg", foreground=TEXT, lmargin1=8, lmargin2=8, spacing3=8)
-        self.log.tag_configure("system", foreground=MUTED, font=self.font_small, spacing3=8)
 
         style = ttk.Style(self)
         try:
