@@ -107,7 +107,11 @@ class AuroraApp(tk.Tk):
         self.log.tag_configure("system", foreground=MUTED, font=self.font_small, spacing3=8)
 
         bottom = tk.Frame(self, bg=NIGHT)
+        line_h = int(self.font_ui.metrics("linespace") or 18)
+        bottom.configure(height=line_h * 3 + 28, width=480)
         bottom.grid(row=2, column=0, sticky="ew", padx=18, pady=(0, 16))
+        bottom.grid_propagate(False)
+        bottom.pack_propagate(False)
 
         send = tk.Button(
             bottom,
